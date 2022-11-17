@@ -1,0 +1,112 @@
+---
+title: "Untitled"
+author: "Abdullatif Alnuaimi - 731009420"
+date: '2022-09-28'
+output: html_document
+---
+
+```{r}
+
+library(ggplot2)
+library(maps)
+library(fields)
+library(ggmap)
+library(lubridate)
+library(hms)
+
+wf_loc <- read.csv("/Users/abdullatifalnuaimi/Downloads/Wildland_Fire_Locations_US.csv")
+ST_TX <- read.csv("/Users/abdullatifalnuaimi/Downloads/Texas_Fire_Department_and_Substations.csv")
+head(wf_loc)
+head(ST_TX)
+
+wf_loc$Time_Spent_ONFIRE <- round(difftime(wf_loc$FireOutDate, wf_loc$FireDiscoveryDate, units = "days"), 2)
+wf_loc$Time_Spent_ONFIRE_NUMERIC <- as.numeric(wf_loc$Time_Spent_ONFIRE)
+
+wf_loc <- wf_loc[-which(wf_loc$Time_Spent_ONFIRE_NUMERIC < 0), ]
+
+wf_loc_TX <- wf_loc[which(wf_loc$State == "TX"), ]
+
+wf_loc_TX_Wl <- wf_loc_TX[which(wf_loc_TX$FireCause == "Natural"), ]
+
+
+```
+
+```{r}
+# setting working directory
+setwd("/Users/abdullatifalnuaimi/Downloads/Major_Rivers_dd83/")
+# Uploading Shape files
+library(rgdal)
+shp <- readOGR(dsn = "." , layer = "MajorRivers_dd83")
+#splitting shap files into data frame
+df = fortify(shp)
+# Plotting using ggplot2
+ggplot()+
+  geom_line(aes(x=long , y = lat , group = group), color = "lightblue" , data = df)
+
+```
+
+```{r}
+#Introducing a background map Using Google map
+register_google(key = "AIzaSyBTO-5cQCo2jsqXZzHBTX76dUnC0qvCF3s")
+City="Texas"
+map_google=get_map(location=City,zoom=6,maptype="hybrid",color="color")
+
+#png(file="/Users/abdullatifalnuaimi/Downloads/saving_plot2.png",
+#width=600, height=350)
+#dev.off()
+
+#Output the map
+# Plot modifications (http://www.sthda.com/english/wiki/ggplot2-point-shapes)
+
+NFFS_Plot <- ggmap(map_google) + geom_point(aes(x = Longitude, y = Latitude ,color = "Natural Fire"), data = wf_loc_TX_Wl)+ geom_point(aes(x = Longitude, y = Latitude , color = "Fire Station") , data = ST_TX, size=1)+labs(title="Natural Fire VS Fire Stations",x ="Longitude", y = "Latitude") + theme(legend.position = "right")
+
+FS_Plot <-  ggmap(map_google) +geom_point(aes(x = Longitude, y = Latitude , color = "Fire Station") , data = ST_TX, size=1)+labs(title="Texas Fire Departments / Substations",x ="Longitude", y = "Latitude") + theme(legend.position = "right")
+
+WR_Plot <- ggmap(map_google) + geom_line(aes(x=long , y = lat , group = group), color = "lightblue" , data = df)+labs(title="Texas River Basins",x ="Longitude", y = "Latitude") + theme(legend.position = "right")
+
+Mix_Plot <- ggmap(map_google) + geom_point(aes(x = Longitude, y = Latitude ,color = "Natural Fire"), data = wf_loc_TX_Wl)+ geom_point(aes(x = Longitude, y = Latitude , color = "Fire Station") , data = ST_TX, size=1)+ geom_line(aes(x=long , y = lat, color = "River Basins", group = group) , data = df)+labs(title="Texas Wildfire",x ="Longitude", y = "Latitude") 
+
+```
+```{r}
+# Taking the data from Census_api and do multi-polygon data type analysis
+library(ggplot2)
+library(maps)
+library(fields)
+library(ggmap)
+library(lubridate)
+library(hms)
+census_api_key("af9a512c883358852e938f25705f78363a5263c3") 
+
+US_population <- get_acs( geography = "county", 
+                  variables = "B01003_001", geometry = TRUE,shift_geo=TRUE)
+
+Texas_population <- US_population %>% filter(str_detect(NAME,", Texas"))
+
+colnames(Texas_population)[4] <- "Population_count"
+
+TXPoP_Plot <- Texas_population %>%
+  ggplot(aes(fill = Population_count)) + 
+  geom_sf() +
+  coord_sf(crs = st_crs(Texas_population)) +
+  scale_fill_continuous()+
+  labs(title='Texas Populations Per County')
+  
+```
+
+```{r}
+library(ggpubr)
+
+ggarrange(TXPoP_Plot, FS_Plot,
+          ncol = 2, nrow = 1)
+
+ggarrange(TXPoP_Plot, WR_Plot,
+          ncol = 2, nrow = 1)
+
+ggarrange(TXPoP_Plot,NFFS_Plot,
+          ncol = 2, nrow = 1)
+
+ggarrange(TXPoP_Plot,Mix_Plot,
+          ncol = 2, nrow = 1)
+```
+
+

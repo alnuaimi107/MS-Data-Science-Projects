@@ -1,0 +1,132 @@
+,CAS-Number,Aroma_Chemical,Odor_Description,Family,Odor_Strength,Perfumary_Note,Perfumary_Note_1,Odor_Strength_1,Family_1,sweet,aldehydic,waxy,citrus,orange,fatty,fruity,moss,tuberose,coconut,musk,wood,herbal,amber,animal,fresh,sandal,lavender,floral,spice
+0,112-31-2,Aldehyde C10 – Decanal,"Sweet, aldehydic, orange, waxy and citrus rind",Aldehydic,High,Base,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+1,112-45-8,Aldehyde C11,"Citrus, waxy, fatty and aldehydic with a green, soapy nuance",Aldehydic,High,Base,0,0,0,0,1,1,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+2,112-54-9,Aldehyde C12 Lauric,"Soapy, waxy, aldehydic, citrus, orange rindy with floral nuances",Aldehydic,High,Base,0,0,0,0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+3,110-41-8,Aldehyde C12 MNA,fresh amber aldehydic moss citrus tuberose metallic waxy coumarinic,Aldehydic,High,Base,0,0,0,0,1,1,1,0,0,0,1,1,0,0,0,0,1,0,1,0,0,0,0
+4,104-67-6,Aldehyde C14 – gamma Undecalactone,"Creamy, fatty, fruity, coconut, peach, Iactonic, ketonic and fruity",Aldehydic,Medium,Base,0,2,0,0,0,0,0,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0
+5,77-83-8,Aldehyde C16 - Strawberry Glycidate,"Sweet, fruity strawberry-like with floral honey undertones",Fruity,Medium,Base,0,2,12,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+6,104-61-0,Aldehyde C18 – gamma Nonalactone,"Sweet, creamy, coconut, fatty with oily buttery nuances",Coconut,Medium,Base,0,2,10,1,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+7,67634-00-8,Allyl amyl glycolate,fruity green galbanum pineapple fusel,Fruity,Medium,Base,0,2,12,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+8,929625-08-1,Ambermax 50,amber woody cedarwood ambergris,Amber,High,Base,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0
+9,7779-50-2,Ambrettolide,"Sweet, soapy, perfume-like with a heavy fruity undertone",Soapy,Medium,Base,0,2,24,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+10,2050-08-0,Amyl Salicylate,herbal floral clover azalea green sweet chocolate,Floral,Medium,Base,0,2,11,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0
+11,123-11-5,Anisaldehyde,"Sweet, powdery, vanilla, anise, woody, coumarin and creamy with a spicy nuance",Anisic,Medium,Base,0,2,5,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+12,89-43-0,Aurantiol,floral lily orange blossom sweet,Floral,Medium,Base,0,2,11,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+13,140-11-4,Benzyl Acetate,"Sweet, fruity and floral",Floral,Medium,Middle,1,2,11,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+14,118-58-1,Benzyl Salicylate,balsam clean herbal oily sweet,Balsamic,Low,Base,0,1,7,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+15,28940-11-6,Calone liquid,fresh watery clean melon green marine ozone phenolic,Melon,High,Base,0,0,17,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+16,33704-61-9,Cashmeran,rich spicy musk woody clean,Musk,Medium,Middle,1,2,20,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0
+17,NA,Castoreum (synthetic),"Animal, Leather, Castoreum Extract",Musk,Low,Base,0,1,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+18,67874-81-1,Cedramber,woody dry cedar ambergris,Woody/Amber,Medium,Base,0,2,29,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0
+19,104-54-1,Cinnamic alcohol,"Cinnamon spice, floral, green and fermented with powdery balsamic nuances",Balsamic,Medium,Base,0,2,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1
+20,928-96-1,cis-3-Hexenol,fresh green cut grass foliage vegetable herbal oily,Green,High,Top,2,0,14,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0
+21,3681-71-8,cis-3-Hexenyl Acetate,"Fresh green sweet fruity with apple, pear and melon nuances",Green,High,Top,2,0,14,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0
+22,5392-40-5,Citral,"Fresh, juicy, Iemon peel, with a sweet tangy green nuance",Citrus,Medium,Top,2,2,9,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+23,106-22-9,Citronellol,floral leather waxy rose bud citrus,Floral,Medium,Middle,1,2,11,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+24,NA,Civet (synthetic),"Animalic, powdery, scatol, leathery, powerful",Animal,High,Base,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+25,91-64-5,Coumarin,sweet hay tonka new mown hay,Tonka,Medium,Base,0,2,26,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+26,103-95-7,Cyclamen Aldehyde,floral cyclamen fresh rhubarb musty green,Floral,Medium,Middle,1,2,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+27,24720-09-0,Damascone alpha,floral rose apple fruity black currant,Fruity,High,Middle,1,0,12,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+28,18479-58-8,Dihydromyrcenol,fresh citrus lime floral clean cologne weedy,Citrus,Medium,Top,2,2,9,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+29,13254-34-7,Dimetol,fresh dihydrolinalool floral woody citrus herbal,Herbal,Medium,Middle,1,2,15,0,0,0,1,0,0,0,0,0,0,0,1,1,0,0,1,0,0,1,0
+30,67801-20-1,Ebanol,sandalwood woody musk,Woody,Medium,Base,0,2,28,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,1,0,0,0
+31,10339-55-6,Ethyl linalool,fresh bois de rose herbal wet green lavender bergamot,Floral,Medium,Middle,1,2,11,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,1,0,0
+32,4940-11-08 00:00:00,Ethyl Maltol,sweet caramel jam strawberry cotton candy,Caramellic,High,Base,0,0,8,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+33,105-54-4,Ethyl Methyl 2 Butyrate,fruity juicy fruit pineapple cognac,Fruity,High,Top,2,0,12,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+34,121-32-4,Ethyl Vanillin,"Sweet, creamy, vanilla, with a root berry salicylate-like nuance",Vanilla,Medium,Base,0,2,27,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+35,105-95-3,Ethylene Brassylate,"Powdery, sweet, floral and ambrette-like with woody, spicy and vanilla nuances",Musk,Medium,Base,0,2,20,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0
+36,97-53-0,Eugenol,sweet spicy clove woody,Spicy,Medium,Middle,1,2,25,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+37,106-02-5,Exaltolide,musk animal powdery natural fruity,Musk,High,Base,0,0,20,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0
+38,4602-84-0,Farnesol,mild fresh sweet linden floral angelica,Floral,Low,Base,0,1,11,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+39,NA,Fixateur 505,ambergris old wood musty cistus fecal animal,Amber,Medium,Base,0,2,1,0,0,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0
+40,67634-15-5,Floralozone,ozone clean fresh green marine,Marine,Medium,Middle,1,2,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+41,125109-85-5,Florhydral,floral green muguet linden flower lily of the valley fresh,Floral,Medium,Base,0,2,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+42,1222-05-5,Galaxolide 50,strong diffusive sweet floral musk,Musk,Medium,Base,0,2,20,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0
+43,106-24-1,Geraniol,sweet floral fruity rose waxy citrus,Floral,Medium,Middle,1,2,11,1,0,1,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+44,105-87-3,Geranyl Acetate,"Floral, rosy, waxy, herbal and green with a slight cooling nuance",Floral,Medium,Middle,1,2,11,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0
+45,24851-98-7,Hedione,"Sweet, fruity, floral, citrus lemon and grapefruit-like, woody jasmine and green",Floral,Medium,Base,0,2,11,1,0,0,1,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0
+46,1205-17-0,Helional,watery fresh green ozone cyclamen hay,Floral,Medium,Base,0,2,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+47,101-86-0,Hexyl cinnamal,"Sweet, floral, green, citrus and fruity with powdery tropical spicy notes",Floral,Medium,Base,0,2,11,1,0,0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+48,107-75-5,hydroxycitronellal,Sweet floral perfume-like notes with green citrus and melon undertones,Floral,Medium,Base,0,2,11,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+49,120-72-9,Indole,"Pungent, floral, slightly naphtha and mothball like with a fecal and animalic musty",Animal,High,Base,0,0,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0
+50,127-41-3,Ionone alpha,sweet woody floral violet orris tropical fruity,Floral,Medium,Base,0,2,11,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0
+51,14901-07-6,Ionone beta,floral woody sweet fruity berry tropical beeswax,Floral,Medium,Middle,1,2,11,1,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0
+52,54464-57-2,Iso E Super,woody dry ambergris cedar old wood ketonic phenolic,Woody,Medium,Base,0,2,28,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,0,0,0
+53,36306-87-3,Kephalis,woody old wood amber tobacco hot herbal,Woody,Medium,Middle,1,2,28,0,0,0,0,0,0,0,0,0,0,0,1,1,1,0,0,0,0,0,0
+54,NA,laevo-Linalool,"Citrus, Lavender ",None,Medium,Middle,1,2,23,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0
+55,80-54-6,Lilial,floral muguet watery green powdery cumin,Floral,Medium,Middle,1,2,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+56,78-70-6,Linalool,"Lavender, Citrus, orange, floral, terpy, waxy and rose",Floral,Medium,Middle,1,2,11,0,0,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0
+57,115-95-7,Linalyl Acetate,"Sweet, green, floral and spicy with a clean, woody, terpy and citrus nuance",Herbal,Medium,Middle,1,2,15,1,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0
+58,106-72-9,Melonal,fresh ozone melon fresh air sweet clean green,Melon,High,Middle,1,0,17,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+59,134-20-3,Methyl anthranylate,"Fruity, concord grape, musty with a floral powdery nuance",Fruity,Medium,Middle,1,2,12,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+60,1335-46-2,Methyl Ionone,orris violet powdery woody,Floral,Medium,Base,0,2,11,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+61,94201-19-1,Methyl laitone,lactonic coconut meadow tropical creamy dairy plum,Coconut,High,Base,0,0,10,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+62,67674-46-8,Methyl pamplemousse,fresh citrus grapefruit peel soapy woody green violet,Fruity,Medium,Top,2,2,12,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0
+63,119-36-8,Methyl salicylate,"Sweet, salicylate, root beer, wintergreen, aromatic, slightly phenolic and camphoreous",Minty,Medium,Middle,1,2,18,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+64,81-14-1,Musk Ketone Subs,fatty musk soapy dry powdery,Musk,Medium,Base,0,2,20,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+65,113889-23-9,Nectarate,fruity green peach orchid balsam woody,Fruity,Medium,Base,0,2,12,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0
+66,106-25-2,Nerol,"Fresh, citrus, floral, green, sweet, Iemon/lime and waxy with a spicy depth",Floral,Medium,Middle,1,2,11,1,0,1,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+67,70788-30-6,Norlimbanol,dry sawdust woody powdery amber sandalwood,Woody,Medium,Base,0,2,28,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,1,0,0,0
+68,68647-72-3,Orange Terpenes (d-limonene),fresh juicy sweet orange,Citrus,Medium,Top,2,2,9,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+69,93-08-3,Oranger Crystals,sweet neroli orange blossom neroli powdery,Floral,Medium,Base,0,2,11,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+70,101-48-4,PADMA,green foliage floral rosy earthy mushroom,Green,Medium,Base,0,2,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+71,103-45-7,Phenyl Ethyl Acetate,floral rose sweet honey fruity tropical,Floral,Medium,Middle,1,2,11,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+72,60-12-8,Phenyl Ethyl Alcohol,"Sweet, floral, freeh and bready with a rosey honey nuance",Floral,Medium,Middle,1,2,11,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+73,122-78-1,Phenylacetaldehyde,"Honey, floral rose, swaat, powdery, fermented, chocolate, slight earthy nuance",Green,High,Base,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+74,5471-51-2,Raspberry Ketone,"Berry, sweet, woody and raspberry with a ripe, jammy, seedy character",Fruity,Medium,Base,0,2,12,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+75,16409-43-1,Rose Oxide,"Green, vegetative, floral, herbal and slightly camphoreous with a spicy nuance",Green,High,Base,0,0,14,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0
+76,54440-17-4,Safraleine,herbal leather saffron iodine phenolic tobacco,Herbal,High,Base,0,0,15,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0
+77,70955-71-4,Sandela,sandalwood clean sweet woody cashew,Woody,Medium,Base,0,2,28,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0
+78,28219-60-5,SantalIFF,sandalwood creamy woody waxy mus,Woody,Medium,Base,0,2,28,0,0,1,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0
+79,93-92-5,Styrallyl Acetate,"Green, fruity and musty with seedy, berry nuances",Green,Medium,Middle,1,2,14,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+80,1506-02-1,Tonalid,strong sweet amber fruity musk powdery,Musk,Medium,Base,0,2,20,1,0,0,0,0,0,1,0,0,0,1,0,0,1,0,0,0,0,0,0
+81,68039-49-6,Triplal Extra,green aldehydic leafy cortex tart floral peely,Green,Medium,Middle,1,2,14,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+82,121-33-5,Vanillin,"Sweet, vanilla, vanillin, cream, phenolic, chocolate",Vanilla,Medium,Base,0,2,27,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+83,37609-25-9,Velvione,dry powdery musk amber civet,Musk,Medium,Base,0,2,20,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0,0,0
+84,4707-47-5,Veramoss / Evernyl,mossy oakmoss woody phenolic earthy,Mossy,High,Base,0,0,19,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0
+85,32210-23-4,Vertenex,woody cedar floral oily herbal balsam green fruity,Woody,Medium,Middle,1,2,28,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,1,0
+86,32388-55-9,Vertofix,woody vetiver amber leather musk cedar,Woody,Medium,Base,0,2,28,0,0,0,0,0,0,0,0,0,0,1,1,0,1,0,0,0,0,0,0
+87,117-98-6,Vetiveryl Acetate,woody powdery root vetiver sweet dry sandal,Woody,Medium,Base,0,2,28,1,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0
+88,NA,Valeric Acid **,"Pungent, acidic, sharp, cheese-like, sour milk, tobacco, slight fruity nuances",Gourmand,None,Top,2,3,13,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+89,NA,Ethyl Isobutyrate **,"Sweet, ethereal, fruity, alcoholic, rum, buttery",Fruity,None,Top,2,3,12,1,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+90,NA,Hexanoic Acid **,"Sharp, Sour, Fatty, Cheese, Acidic",Gourmand,None,Top,2,3,13,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+91,NA,Indole (Pure) Crystals **,"Animal, floral, moth ball, musky",Animalic,None,Top,2,3,4,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0
+92,NA,Acetal (Natural) **,"Green, nut, earthy, sweet, vegetable",Fruity,None,Top,2,3,12,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+93,NA,Sotolone (Caramel Furanone),"Sweet, caramellic, maple sugar, burnt sugar, coffee",Gourmand,None,Top,2,3,13,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+94,NA,Methyl acetophenone para (Symrise),"Floral, fruity, neroli, anise, almond",Floral,None,Top,2,3,11,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+95,NA,Zenolide (IFF) **,"Soft, delicate musk, red fruit",Musky,None,Top,2,3,21,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0
+96,NA,Dimethyl Hydroquinone Crystals,"Sweet, green, new mown hay, fennel",Green,None,Top,2,3,14,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+97,NA,Safranal **,"Fresh, herbal, phenolic, metallic, rosemary, tobacco, spicy.",Herbal,None,Top,2,3,15,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0,0,0
+98,NA,Meijiff™ (IFF),"Clean floral muguet, soft white magnolia.",Floral,None,Top,2,3,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+99,NA,Delphol HC (Firmenich),"Floral, jasmine, greenThis green, floral/ jasmine, fruity note has a slight cis-jasmone note. It is reminiscent of Magnolia and Tea with slightly fruity undertones.",Floral,None,Top,2,3,11,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+100,NA,Yara Yara (Crystals),"Sweet naphthyl, floral, orange blossom, acacia, neroli",Floral,None,Top,2,3,11,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+101,NA,Liffarome (IFF),"Green, Floral, Violet, FruityA natural smelling violet green, pear, grass odor. Effective in trace amounts..",Green,None,Top,2,3,14,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+102,NA,Cyclomethylene Citronellol (Firmenich),Soft floral note reminding closely muguet and rose's petal characterPerfumery Usage: Cyclomethylene Citronellol can give soft floral effects in a very wide range of perfume types.,Floral,None,Top,2,3,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+103,NA,Neofolione (Givaudan),"Green, Floral, Fresh, PowerfulNeofolione blends very well with most floral notes, especially violet, where it is particularly useful in replacing Folione. It imparts freshness and diffusion and has good stability.",Green,None,Top,2,3,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+104,NA,Delta Decalactone,"Sweet, creamy, lactonic, fatly, coconut, milky",Gourmand,None,Middle,1,3,13,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0
+105,NA,Indolarome (IFF),"Animal, indole, earthy, jasmin",Musky - Animalic,None,Middle,1,3,22,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0
+106,NA,Lilyflore® (Firmenich),"Floral, lily, muguet, lilialA beautiful muguet floral note between Hydroxycitronellal, Lilial and Lyral",Floral,None,Middle,1,3,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+107,NA,Methyl Eugenol,"Sweet, fresh, warm, spicy, clove, carnation, cinnamon",Spicy,None,Middle,1,3,25,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0
+108,NA,Methyl Isoeugenol,"Spicy, clove, blossom, carnation, woody",Spicy,None,Middle,1,3,25,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0
+109,NA,Lilybelle® (Symrise),"Floral, Lily of the Valley, Aldehydic, Green, CyclameImplements ozonic-green facets and creates watery, airy transparent accents. Provides a green aldehydic element to powdery notes. Refreshes and provides lift in general.",Floral,None,Middle,1,3,11,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+110,NA,Aprifloren® (Symrise),"Fruity, floral, lactonic, green, peach",Fruity,None,Middle,1,3,12,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+111,NA,Mintonat (Symrise),"Herbaceous, green, aromatic, floral, freshGives complexity and vivacity; acts as a booster for freshness; unites single building blocks to a harmonious fragrance; can be used as a modifier as well as at high use levels",Green,None,Middle,1,3,14,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+112,NA,Bourgeonal (Givaudan),"Floral, Green, Muguet, Fresh, PowerfulBourgeonal is a powerful, diffusive fresh floral muguet, with a watery green character. Its unique muguet-aldehyde character is extensively used in toiletries and alcoholic fragrances.",Floral,None,Middle,1,3,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0
+113,NA,Damascone Gamma,"Fruity, floral, rose, green, cooked apple, plum, thujonic, tobacco",Floral,None,Middle,1,3,11,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+114,NA,Dynascone (Firmenich) **,"Green, fruity, floralAn extremely powerful and diffusive material that has an odour reminiscent of galbanum, with a pineapple and hyacinth character DYNASCONE® is used in all types of perfumes to give unique green, floral and fruity effects.",Green,None,Middle,1,3,14,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,1,0
+115,NA,Dodecalactone Delta,"Fresh, sweet, metallic, peach, oily, coconut, buttery",Gourmand,None,Middle,1,3,13,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0
+116,NA,Bisabolene (Givaudan),"Balsamic, Sweet, Myrrh, Orange flower",Fruity,None,Middle,1,3,12,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+117,NA,Isoeugenyl Acetate,"Carnation, rose, spicy",Spicy,None,Middle,1,3,25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+118,NA,Iralia® (Firmenich),"Orris, violet, powdery, woodyThe most floral and rich of all qualities of methylionones with a strong orris, violet character and a slight fruity note.",Floral,None,Base,0,3,11,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,1,0
+119,NA,Iralia® TOTAL (Firmenich),"Powdery, orris, violet, woodyA very floral methylionone note typical of the IRALIA� family with a strong orris, violet character. A more woody and less refined floral aspect than IRALIA� This cost effective quality of our well-known IRALIA® has proved its advantage over other methylionones by its more complex character combined with a better substantivity on cloth as well as a better stability in certain difficult media.",Floral,None,Base,0,3,11,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,1,0
+120,NA,Firsantol (Firmenich),Very powerful and natural sandalwood noteFirsantol™ can be used in any type of fragrances to give a powerful sandalwood touch. Tenacity is improved with a very natural sandalwood aspect.,Woody,None,Base,0,3,28,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0
+121,NA,Ethyl Undecylenate,"Waxy, fruity, clean, creamy, soapy, cognac",Gourmand,None,Base,0,3,13,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0
+122,NA,Jasmopyrane Forte (Givaudan),"Floral, Jasmine, HerbalJasmopyrane has a floral jasmin note with a rich sweet herbaceous character and hints of tea. The FORTE quality is a broader-cut, lower cost option that is slightly more tenacious and has a more pronounced green mushroom.",Floral,None,Base,0,3,11,1,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0
+123,NA,BHT Crystals,"Mild phenolic, camphor (at 100%)",Anti-oxidant,None,Base,0,3,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+124,NA,Isolongifolanone (Givaudan),"Fresh woody note, dry and diffusive with rich amber quality",Woody,None,Base,0,3,28,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,1,0,0,0,0
+125,NA,Mahagonate® (Symrise),"Woody, dry, herbal-patchouli, laurel leafDespite the shared CAS number and widespread listing of the two as equivalent this is not the same material as Poivrol (also manufactured by Symrise and only recently released): the latter has a distinctive spicy, black-pepper note which is almost entirely absent from the Mahagonate product.",Woody,None,Base,0,3,28,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0
+126,NA,Exaltenone (Firmenich),"A nice musky-animalic note which resembles natural musk TonkinEXALTENONE brings an elegant creamy, musky effect. Especially interesting effects can be achieved at low levels with floral, fruity and gourmand compositions.",Musky,None,Base,0,3,21,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0
+127,NA,Phenyl Ethyl Salicylate (Crystals),"Balsamic, floral, rose, hyacinth, carnation",Floral,None,Base,0,3,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0
+128,NA,Traseolide (Quest),"Dry, sweet, amber, musk, herbal, creamy",Musky,None,Base,0,3,21,1,0,0,0,0,0,0,0,0,0,1,0,1,1,0,0,0,0,0,0
+129,NA,Ysamber K (Symrise),"Woody, woody-ambery, cedar wood, fruityYsamber K adds a clean, fresh woody-ambery aspect; acts as a pillar material for woody creations; forms lively complexes with citrus top notes.",Woody,None,Base,0,3,28,0,0,0,1,0,0,1,0,0,0,0,1,0,1,0,1,0,0,0,0
+130,NA,Ambrocenide Crystals (Symrise),"Amber, woody, amberyPowerful and long-lasting top to base booster; lends power to woody and ambery accords; gives radiance and enhances citrus and aldehydic notes at low use levels; propels musk notes to be perceived in the top notes; gives volume and strength to floral heart notes",Ambery,None,Base,0,3,2,0,1,0,1,0,0,0,0,0,0,1,1,0,1,0,0,0,0,1,0

@@ -1,0 +1,146 @@
+---
+title: "GP_Spatial_Regression_Model"
+author: "Abdullatif Alnuaimi - Ben Klein"
+date: '2022-10-26'
+output: html_document
+---
+
+
+```{r}
+library(mgcv)
+library(geoR)
+library(ggplot2)
+library(maps)
+library(fields)
+library(ggmap)
+library(lubridate)
+library(hms)
+
+wf_loc <- read.csv("/Users/abdullatifalnuaimi/Downloads/Wildland_Fire_Locations_US.csv")
+ST_TX <- read.csv("/Users/abdullatifalnuaimi/Downloads/Texas_Fire_Department_and_Substations.csv")
+head(wf_loc)
+head(ST_TX)
+
+wf_loc$Time_Spent_ONFIRE <- round(difftime(wf_loc$FireOutDate, wf_loc$FireDiscoveryDate, units = "days"), 2)
+wf_loc$Time_Spent_ONFIRE_NUMERIC <- as.numeric(wf_loc$Time_Spent_ONFIRE)
+
+wf_loc <- wf_loc[-which(wf_loc$Time_Spent_ONFIRE_NUMERIC < 0), ]
+
+wf_loc_TX <- wf_loc[which(wf_loc$State == "TX"), ]
+
+wf_loc_TX_Wl <- wf_loc_TX[which(wf_loc_TX$FireCause == "Natural"), ]
+
+df_spModel <- wf_loc_TX_Wl[,c('Longitude','Latitude','Time_Spent_ONFIRE_NUMERIC')]
+
+head(df_spModel)
+
+# Defining dependent variables X = locations (lang,lat) and independent variable Y (time spent to put out fire)
+Y<-df_spModel$Time_Spent_ONFIRE_NUMERIC
+long=df_spModel$Longitude
+lat=df_spModel$Latitude
+Coords=cbind(long,lat)
+X = Coords
+
+# Separating the data set into 80% training and 20% testing
+n = nrow(df_spModel)
+n.testing = n*0.2
+testing.id <- sample(1:n.testing,replace = FALSE)
+Y.test <- Y[testing.id]
+X.test <- X[testing.id,] 
+coords.test <- Coords[testing.id,]
+
+Y.train <- Y[-testing.id]
+X.train <- X[-testing.id,] 
+coords.train <- Coords[-testing.id,]
+
+
+quilt.plot(X.train,Y.train, main="Spatial Plot")
+ 
+
+```
+
+```{r}
+# Initial values of Spatial random effect parameters. 
+
+# Set in.sigma.sq to be a fraction of the residual var (Spatial variance)
+ini.sigma.sq=0.9*(summary(lm(Y.train~X.train))$sigma)^2
+## Set ini.phi to be a fraction of the maximum distance / 3 * any constant (Spatial range parameter) , here I choose 2
+ini.phi = max(rdist(X.train))/(3*2)
+
+ fit_mle <- likfit(data=Y.train,coords=coords.train,
+            trend = ~ X.train[,1]+X.train[,2],
+            fix.nugget=F,cov.model="exponential",ini = c(ini.sigma.sq,ini.phi))
+ 
+fit_mle
+```
+
+
+```{r}
+beta_hat<-fit_mle$beta
+beta_cov<-fit_mle$beta.var
+beta_var<-diag(beta_cov)
+# Getting the standard error
+beta_se<-sqrt(beta_var) 
+# Getting the confidence interval of estimated values
+upper.bond <- beta_hat + beta_se
+lower.bond <- beta_hat - beta_se
+
+print(cbind(beta_hat,beta_se))
+
+print(cbind(lower.bond,upper.bond))
+```
+
+```{r}
+# Doing prediction on the testing data
+krigecontrol=krige.control(type.krige = "OK", trend.d = ~ X.train[,1]+X.train[,2], trend.l = ~ X.test[,1]+X.test[,2], obj.model = fit_mle)
+
+prediction<-krige.conv(data=Y.train,coords=coords.train,locations=coords.test,krig=krigecontrol)
+
+# Calculating the root mean square error between predicted VS real
+sqrt(mean(prediction$predict-Y.test)^2)
+
+```
+
+
+```{r}
+# Generate 2000 random Locations around Texas
+Seqlat <- seq(from=25.50, to=36.30, by=.01)
+Seqlong <- seq(from=-106.38, to=-93.31, by=.01)
+Latitude <- sample(Seqlat, size=2000, replace=TRUE)
+Longitude <- sample(Seqlong, size=2000, replace=TRUE)
+VirtualCoordinates <- data.frame(x= Longitude, y = Latitude)
+# We introduce maps library to make sure that all coordinates exactly inside Texas 
+library(maps)
+VirtualCoordinates$state <- map.where("state", VirtualCoordinates$x, VirtualCoordinates$y)
+TX_VirtualCoordinates <- VirtualCoordinates[VirtualCoordinates$state == "texas" & !is.na(VirtualCoordinates$state) ,] 
+# 500 random Locations inside Texas
+TX_VirtualCoordinates_selected <-  TX_VirtualCoordinates[1:500,1:2]
+X_New_Coordinates = TX_VirtualCoordinates_selected
+
+
+krigecontrol=krige.control(type.krige = "OK", trend.d = ~ X.test[,1]+X.test[,2], trend.l = ~X_New_Coordinates[,1]+X_New_Coordinates[,2], obj.model = fit_mle)
+
+prediction_New<-krige.conv(data=Y.test,coords=coords.test,locations=TX_VirtualCoordinates_selected,krig=krigecontrol)
+
+# Converting any negative value to zero
+prediction_New$predict <- replace(prediction_New$predict, which(prediction_New$predict < 0), 0)
+# Rounding all numbers nearest integer
+prediction_New$predict <- round(prediction_New$predict,digits=0)
+# combining all the coordinates with predicted value
+Predicted_data <- cbind(TX_VirtualCoordinates_selected,prediction_New$predict)
+
+colnames(Predicted_data)[3] <- "Time_Spent_ONFIRE_Days"
+```
+
+```{r}
+#Introducing a background map Using Google map
+register_google(key = "AIzaSyBTO-5cQCo2jsqXZzHBTX76dUnC0qvCF3s")
+City="Texas"
+map_google=get_map(location=City,zoom=6,maptype="hybrid",color="color")
+
+#Output the map
+# Plot modifications (http://www.sthda.com/english/wiki/ggplot2-point-shapes)
+ggmap(map_google) + geom_point(aes(x = x, y = y , color = Time_Spent_ONFIRE_Days ), data = Predicted_data) +labs(title="Predictions of 500 Random Locations",x ="Longitude", y = "Latitude") 
+
+```
+

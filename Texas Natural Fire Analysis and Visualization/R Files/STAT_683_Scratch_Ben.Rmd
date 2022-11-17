@@ -1,0 +1,222 @@
+---
+title: "Untitled"
+author: "Ben Klein"
+date: "9/15/2022"
+output: pdf_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(maps)
+library(fields)
+library(ggmap)
+library(lubridate)
+library(hms)
+wf_loc <- read.csv("/Users/benklein18/Desktop/STAT 683/Wildland_Fire_Locations (1).csv")
+View(wf_loc)
+
+
+
+map_stamen=get_stamenmap(bbox=c('left'=-106.645646, 'bottom'=25.837377, 'right'= -93.508292,'top'=36.500704),zoom=6,maptype="terrain",color="color")
+
+
+wf_loc$FireDiscoveryDT <- as.POSIXct(wf_loc$FireDiscoveryDT, format = "%m/%d/%y %H:%M:%S")
+wf_loc$FireOutDT  <- as.POSIXct(wf_loc$FireOutDT, format = "%m/%d/%y %H:%M:%S")
+
+wf_loc$Time_Spent_ONFIRE <- round(difftime(wf_loc$FireOutDT, wf_loc$FireDiscoveryDT, units = "days"), 2)
+wf_loc$Time_Spent_ONFIRE_NUMERIC <- as.numeric(wf_loc$Time_Spent_ONFIRE)
+
+wf_loc <- wf_loc[-which(wf_loc$Time_Spent_ONFIRE_NUMERIC < 0), ]
+TX_loc_fires <- wf_loc[which(wf_loc$State == "TX"), ]
+TX_loc_fires$Time_Spent_ONFIRE_NUMERIC <- as.numeric(TX_loc_fires$Time_Spent_ONFIRE)
+
+
+
+
+CA_loc_fires <- wf_loc[which(wf_loc$State == "CA"), ]
+
+MN_loc_fires <- wf_loc[which(wf_loc$State == "MN"), ]
+
+MT_loc_fires <- wf_loc[which(wf_loc$State == "MT"), ]
+
+summary(MN_loc_fires$Time_Spent_ONFIRE_NUMERIC)
+summary(TX_loc_fires$Time_Spent_ONFIRE_NUMERIC)
+summary(CA_loc_fires$Time_Spent_ONFIRE_NUMERIC)
+summary(MT_loc_fires$Time_Spent_ONFIRE_NUMERIC)
+
+# Texas is clearly getting much better at taking care of wildfires quickly.
+
+fire_start_diff_TX <- TX_loc_fires[c(4,5,11,13)]
+fire_start_diff_TX <- fire_start_diff_TX[order(as.Date(fire_start_diff_TX$FireDiscoveryDate, "%Y/%m/%d"), decreasing = FALSE), ]
+
+plot.ts(fire_start_diff_TX$Time_Spent_ONFIRE_NUMERIC)
+table(wf_loc$State)
+
+ggmap(map_stamen) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = FireCause)) +
+  labs(title="Wildfire Locations in Texas",x ="longitude", y = "latitude") 
+
+ggmap(map_stamen) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = as.numeric(Time_Spent_ONFIRE))) +
+  labs(title="Wildfire Locations in Texas",x ="longitude", y = "latitude") 
+
+
+
+
+
+map_stamen_CA =get_stamenmap(bbox=c('left'=-124.6509, 'bottom'=32.5121, 'right'=-114.1315 ,'top'=42.0126),zoom=6,maptype="terrain",color="color")
+
+
+ggmap(map_stamen_CA) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = FireCause)) +
+  labs(title="Wildfire Locations in California",x ="longitude", y = "latitude") 
+
+ggmap(map_stamen_CA) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = as.numeric(Time_Spent_ONFIRE))) +
+  labs(title="Wildfire Locations in California",x ="longitude", y = "latitude") 
+
+
+map_stamen_MN =get_stamenmap(bbox=c('left'=-97.2304, 'bottom'=43.5008, 'right'=-89.4919 ,'top'=49.3877),zoom=6,maptype="terrain",color="color")
+
+ggmap(map_stamen_MN) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = FireCause)) +
+  labs(title="Wildfire Locations in Minnesota",x ="longitude", y = "latitude") 
+
+ggmap(map_stamen_MN) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = as.numeric(Time_Spent_ONFIRE))) +
+  labs(title="Wildfire Locations in Minnesota.",x ="longitude", y = "latitude") 
+
+map_stamen_MT =get_stamenmap(bbox=c('left'=-116.0458, 'bottom'=44.3563, 'right'=-104.0186 ,'top'=48.9991),zoom=6,maptype="terrain",color="color")
+
+ggmap(map_stamen_MT) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = FireCause)) +
+  labs(title="Wildfire Locations in Montana",x ="longitude", y = "latitude") 
+
+ggmap(map_stamen_MT) +  
+  geom_point(data = wf_loc, aes(x = Longitude, y = Latitude, color = as.numeric(Time_Spent_ONFIRE))) +
+  labs(title="Wildfire Locations in Montana",x ="longitude", y = "latitude") 
+
+
+time_order_MT_loc_fires <- MT_loc_fires[c(5,13)]
+time_order_MT_loc_fires <- time_order_MT_loc_fires[order(time_order_MT_loc_fires$FireDiscoveryDate, decreasing = FALSE), ]
+
+ 
+Y <- MT_loc_fires$Time_Spent_ONFIRE_NUMERIC
+long <- MT_loc_fires$Longitude
+lat <- MT_loc_fires$Latitude
+s = cbind(long,lat)
+x = s
+
+MT_heatmap <- quilt.plot(x, Y)
+
+Y <- TX_loc_fires$Time_Spent_ONFIRE_NUMERIC
+long <- TX_loc_fires$Longitude
+lat <- TX_loc_fires$Latitude
+s = cbind(long,lat)
+x = s
+
+TX_heatmap <- quilt.plot(x, Y)
+
+Y <- CA_loc_fires$Time_Spent_ONFIRE_NUMERIC
+long <- CA_loc_fires$Longitude
+lat <- CA_loc_fires$Latitude
+s = cbind(long,lat)
+x = s
+
+CA_heatmap <- quilt.plot(x, Y)
+
+Y <- MN_loc_fires$Time_Spent_ONFIRE_NUMERIC
+long <- MN_loc_fires$Longitude
+lat <- MN_loc_fires$Latitude
+s = cbind(long,lat)
+x = s
+
+MN_heatmap <- quilt.plot(x, Y)
+
+```
+
+
+
+```{r}
+library(ggpubr)
+par(mfrow=c(2,2))
+TX_loc_fires_human <- TX_loc_fires[which(TX_loc_fires$FireCause == "Human"), ]
+TX_loc_fires_human$Time_Spent_ONFIRE_NUMERIC <- as.numeric(TX_loc_fires_human$Time_Spent_ONFIRE)
+plot(as.Date(TX_loc_fires_human$FireDiscoveryDate), TX_loc_fires_human$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "TX Human Cause", xlab = "Fire Occurrence", ylim = c(0,350))
+
+TX_loc_fires_natural <- TX_loc_fires[which(TX_loc_fires$FireCause == "Natural"), ]
+TX_loc_fires_natural$Time_Spent_ONFIRE_NUMERIC <- as.numeric(TX_loc_fires_natural$Time_Spent_ONFIRE)
+plot(as.Date(TX_loc_fires_natural$FireDiscoveryDate), TX_loc_fires_natural$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "TX Natural Cause", xlab = "Fire Occurrence", ylim = c(0,350))
+
+TX_loc_fires_undetermined <- TX_loc_fires[which(TX_loc_fires$FireCause == "Undetermined"), ]
+TX_loc_fires_undetermined$Time_Spent_ONFIRE_NUMERIC <- as.numeric(TX_loc_fires_undetermined$Time_Spent_ONFIRE)
+plot(as.Date(TX_loc_fires_undetermined$FireDiscoveryDate), TX_loc_fires_undetermined$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "TX Undetermined Cause", xlab = "Fire Occurrence", ylim = c(0,350))
+
+TX_loc_fires_unknown <- TX_loc_fires[which(TX_loc_fires$FireCause == "Unknown"), ]
+TX_loc_fires_unknown$Time_Spent_ONFIRE_NUMERIC <- as.numeric(TX_loc_fires_unknown$Time_Spent_ONFIRE)
+plot(as.Date(TX_loc_fires_unknown$FireDiscoveryDate), TX_loc_fires_unknown$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", xlab = "Fire Occurrence", main = "TX Unknown Cause", ylim = c(0,350))
+
+
+```
+
+
+```{r}
+par(mfrow=c(2,2))
+CA_loc_fires_human <- CA_loc_fires[which(CA_loc_fires$FireCause == "Human"), ]
+CA_loc_fires_human$Time_Spent_ONFIRE_NUMERIC <- as.numeric(CA_loc_fires_human$Time_Spent_ONFIRE)
+plot(as.Date(CA_loc_fires_human$FireDiscoveryDate), CA_loc_fires_human$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "CA Human Cause", xlab = "Fire Occurrence", ylim = c(0,570))
+
+CA_loc_fires_natural <- CA_loc_fires[which(CA_loc_fires$FireCause == "Natural"), ]
+CA_loc_fires_natural$Time_Spent_ONFIRE_NUMERIC <- as.numeric(CA_loc_fires_natural$Time_Spent_ONFIRE)
+plot(as.Date(CA_loc_fires_natural$FireDiscoveryDate), CA_loc_fires_natural$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "CA Natural Cause", xlab = "Fire Occurrence", ylim = c(0,570))
+
+CA_loc_fires_undetermined <- CA_loc_fires[which(CA_loc_fires$FireCause == "Undetermined"), ]
+CA_loc_fires_undetermined$Time_Spent_ONFIRE_NUMERIC <- as.numeric(CA_loc_fires_undetermined$Time_Spent_ONFIRE)
+plot(as.Date(CA_loc_fires_undetermined$FireDiscoveryDate), CA_loc_fires_undetermined$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "CA Undetermined Cause", xlab = "Fire Occurrence", ylim = c(0,570))
+
+CA_loc_fires_unknown <- CA_loc_fires[which(CA_loc_fires$FireCause == "Unknown"), ]
+CA_loc_fires_unknown$Time_Spent_ONFIRE_NUMERIC <- as.numeric(CA_loc_fires_unknown$Time_Spent_ONFIRE)
+plot(as.Date(CA_loc_fires_unknown$FireDiscoveryDate), CA_loc_fires_unknown$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", xlab = "Fire Occurrence", main = "CA Unknown Cause", ylim = c(0,570))
+
+```
+
+
+
+
+```{r}
+par(mfrow=c(2,2))
+MN_loc_fires_human <- MN_loc_fires[which(MN_loc_fires$FireCause == "Human"), ]
+MN_loc_fires_human$Time_Spent_ONFIRE_NUMERIC <- as.numeric(MN_loc_fires_human$Time_Spent_ONFIRE)
+plot(as.Date(MN_loc_fires_human$FireDiscoveryDate), MN_loc_fires_human$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "MN Human Cause", xlab = "Fire Occurrence", ylim = c(0,450))
+
+MN_loc_fires_natural <- MN_loc_fires[which(MN_loc_fires$FireCause == "Natural"), ]
+MN_loc_fires_natural$Time_Spent_ONFIRE_NUMERIC <- as.numeric(MN_loc_fires_natural$Time_Spent_ONFIRE)
+plot(as.Date(MN_loc_fires_natural$FireDiscoveryDate), MN_loc_fires_natural$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "MN Natural Cause", xlab = "Fire Occurrence", ylim = c(0,450))
+
+MN_loc_fires_undetermined <- MN_loc_fires[which(MN_loc_fires$FireCause == "Undetermined"), ]
+MN_loc_fires_undetermined$Time_Spent_ONFIRE_NUMERIC <- as.numeric(MN_loc_fires_undetermined$Time_Spent_ONFIRE)
+plot(as.Date(MN_loc_fires_undetermined$FireDiscoveryDate), MN_loc_fires_undetermined$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", main = "MN Undetermined Cause", xlab = "Fire Occurrence", ylim = c(0,450))
+
+MN_loc_fires_unknown <- MN_loc_fires[which(MN_loc_fires$FireCause == "Unknown"), ]
+MN_loc_fires_unknown$Time_Spent_ONFIRE_NUMERIC <- as.numeric(MN_loc_fires_unknown$Time_Spent_ONFIRE)
+plot(as.Date(MN_loc_fires_unknown$FireDiscoveryDate), MN_loc_fires_unknown$Time_Spent_ONFIRE, ylab = "Time Spent on Fire (Days)", xlab = "Fire Occurrence", main = "MN Unknown Cause", ylim = c(0,450))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+

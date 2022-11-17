@@ -1,0 +1,13 @@
+name: stock-market-pnc
+title: stock-market-pnc
+username:
+account: alnuaimi107
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 6250950
+bundleId: 5879356
+url: https://alnuaimi107.shinyapps.io/stock-market-pnc/
+when: 1651870288.00517
+lastSyncTime: 1651870288.00518
+asMultiple: FALSE
+asStatic: FALSE

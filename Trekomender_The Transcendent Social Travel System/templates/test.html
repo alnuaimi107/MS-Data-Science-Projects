@@ -1,0 +1,46 @@
+<html>
+    <head>
+        <title>Trekommender</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <script src="https://kit.fontawesome.com/1cfb8d6c79.js" crossorigin="anonymous"></script>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300&display=swap" rel="stylesheet">
+    </head>
+    <video autoplay playsinline muted loop>
+        <source src="{{url_for('static', filename='bgv.mp4')}}" type="video/mp4">
+    </video>
+    <style>
+        video {  
+        width: 100vw;
+        height: 100vh;
+        object-fit: cover;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        }
+        h1,h3{
+                font-family: 'Cormorant Garamond', serif;
+        }
+        .button {
+        width: 100px; 
+        margin: 0 auto; 
+        display: block;
+        }
+    </style>
+
+
+    <body>
+        <h1 class="text-center" >
+            Oh Oh!!! It seems you have not given right data what we need to process.
+        </h1>
+            <h3 class="text-center" > Please try again </h3>
+            <form action="/"> 
+                <div class="d-grid gap-4 col-6 mx-auto">
+                <button type="submit" class="btn btn-outline-secondary" style="color:black; border-box:black" > Reset search </button>
+                </div>
+            </form>
+
+    </body>
+</html>
