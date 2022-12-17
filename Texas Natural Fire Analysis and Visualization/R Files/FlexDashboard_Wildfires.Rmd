@@ -1,0 +1,345 @@
+---
+title: "Wildfire GAM Prediction Visualizations"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: scroll
+---
+
+```{css, echo = FALSE}
+.fluid-row {
+  font-size: 5.9vw;
+}
+```
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(dplyr)
+library(ggplot2)
+library(mgcv)
+library(STRbook)
+library(tidyr)
+library(scales)
+library(lubridate)
+library(dplyr)
+library(ggplot2)
+library(mgcv)
+library(STRbook)
+library(tidyr)
+library(lubridate)
+library(scales)
+library(maps)
+library(fields)
+library(ggmap)
+wf_loc <- read.csv("/Users/benklein18/Desktop/STAT 683/Wildland_Fire_Locations (1).csv")
+wf_loc$FireDiscoveryDT <- as.POSIXct(wf_loc$FireDiscoveryDT, format = "%m/%d/%y %H:%M:%S")
+wf_loc$FireOutDT  <- as.POSIXct(wf_loc$FireOutDT, format = "%m/%d/%y %H:%M:%S")
+wf_loc$Time_Spent_ONFIRE <- round(difftime(wf_loc$FireOutDT, wf_loc$FireDiscoveryDT, units = "days"), 2)
+wf_loc$Time_Spent_ONFIRE_NUMERIC <- as.numeric(wf_loc$Time_Spent_ONFIRE)
+wf_loc <- wf_loc[-which(wf_loc$Time_Spent_ONFIRE_NUMERIC < 0), ]
+TX_loc_fires <- wf_loc[which(wf_loc$State == "TX"), ]
+TX_loc_fires$Time_Spent_ONFIRE_NUMERIC <- as.numeric(TX_loc_fires$Time_Spent_ONFIRE)
+TX_loc_fires$FireDiscoveryDate <- as.Date(TX_loc_fires$FireDiscoveryDate, "%Y/%m/%d")
+TX_loc_fires <- TX_loc_fires[order(TX_loc_fires$FireDiscoveryDate, decreasing = FALSE), ]
+TX_loc_fires$YR <- year(TX_loc_fires$FireDiscoveryDate)
+TX_loc_fires$MON <- month(TX_loc_fires$FireDiscoveryDate)
+#TX_loc_fires$MON <- month.name[as.numeric(TX_loc_fires$MON)]
+#TX_loc_fires$MON <- factor(TX_loc_fires$MON, levels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"))
+TX_loc_fires$DAY <- day(TX_loc_fires$FireDiscoveryDate)
+TX_loc_fires_human_nat <- TX_loc_fires[which(TX_loc_fires$FireCause == "Human" | TX_loc_fires$FireCause == "Natural"), ]
+TX_loc_fires_human <- TX_loc_fires[which(TX_loc_fires$FireCause == "Human"), ]
+TX_loc_fires_natural <- TX_loc_fires[which(TX_loc_fires$FireCause == "Natural"), ]
+map_stamen=get_stamenmap(bbox=c('left'=-106.645646, 'bottom'=25.837377, 'right'= -93.508292,'top'=36.500704),zoom=6,maptype="toner",color="color")
+
+```
+
+Column {.tabset .tabset-fade}
+-----------------------------------------------------------------------
+
+### Monthly Raw Data (2014-2022)
+
+```{r, fig.width=14, fig.height=8}
+TX_loc_fires$Time <- TX_loc_fires$Time_Spent_ONFIRE_NUMERIC
+raw <- ggmap(map_stamen) + geom_point(data = TX_loc_fires, aes(x = Longitude,y = Latitude, colour = Time), size = 1.5) + scale_color_gradientn(name = "Time Spent Putting out Fire (Days)", colours = c("blue","yellow","orange","red"), limits = c(0,21), breaks = c(0,7,14,21)) + xlab("Longitude (deg)") + ylab("Latitude (deg)") + facet_grid(YR~MON) + theme_bw() + ggtitle("Texas Wildfires from 2014-2022") + theme_bw()
+raw
+```
+
+
+### Month Pred (Jan-Dec)
+
+```{r, fig.width=12, fig.height=12}
+f_months <- Time_Spent_ONFIRE_NUMERIC ~ te(Longitude, Latitude, MON,
+bs = c("tp", "cr"), 
+k = c(50, 12), 
+d = c(2, 1)) # (s,t) basis dimension
+TimeSpent_ONFIRE_months <- gam(f_months, family = nb(link = "log"),
+data = TX_loc_fires_human_nat)
+
+lon_months <- TX_loc_fires_human_nat$Longitude
+lat_months <- TX_loc_fires_human_nat$Latitude
+## Construct space-time grid
+grid_locs_months <- expand.grid(Longitude = seq(min(lon_months) - 0.2,
+max(lon_months) + 0.2,
+length.out = 100),
+Latitude = seq(min(lat_months) - 0.2,
+max(lat_months) + 0.2,
+length.out = 100),
+MON = 1:max(TX_loc_fires_human_nat$MON))
+X_months <- predict(TimeSpent_ONFIRE_months, grid_locs_months, se.fit = TRUE)
+
+grid_locs_months$pred <- X_months$fit
+grid_locs_months$se <- X_months$se.fit
+## Plot predictions and overlay observations
+g1 <- ggplot() + ggtitle("Monthly Predictions Total") +
+geom_raster(data = grid_locs_months,
+aes(Longitude, Latitude, fill = pmin(pmax(pred, -1), 5))) +
+facet_wrap(~MON, nrow = 3, ncol = 4) +
+geom_point(data = filter(TX_loc_fires_human_nat, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+aes(Longitude, Latitude),
+colour = "black", size = 3) +
+geom_point(data=filter(TX_loc_fires_human_nat, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+aes(Longitude, Latitude, colour = log(Time_Spent_ONFIRE_NUMERIC)),
+size = 2) +
+fill_scale(limits = c(-1, 5),
+name = expression(log(Y[MON]))) +
+col_scale(name = "log(Time)", limits=c(-1, 5)) +
+theme_bw()
+
+g2 <- ggplot() + ggtitle("Prediction Standard Error (Months)") + 
+geom_raster(data = grid_locs_months,
+aes(Longitude, Latitude, fill = pmin(se, 3))) +
+facet_wrap(~MON, nrow = 3, ncol = 4) +
+fill_scale(palette = "BrBG",
+limits = c(0, 3.0),
+name = expression(s.e.)) +
+theme_bw()
+
+g1
+```
+
+### Month Pred Error (Jan-Dec)
+```{r, fig.width=12, fig.height=12}
+g2
+```
+
+### Year Pred (2014-2022)
+
+```{r, fig.width=12, fig.height=12}
+f <- Time_Spent_ONFIRE_NUMERIC ~ te(Longitude, Latitude, YR, # inputs over which to smooth
+bs = c("tp", "cr"), # types of bases
+k = c(100,8), # knot count in each dimension
+d = c(2, 1)) # (s,t) basis dimension
+
+TimeSpent_ONFIRE <- gam(f, family = nb(link = "log"),
+data = TX_loc_fires_human_nat)
+
+lon <- TX_loc_fires_human_nat$Longitude
+lat <- TX_loc_fires_human_nat$Latitude
+## Construct space-time grid
+grid_locs <- expand.grid(Longitude = seq(min(lon) - 0.2,
+max(lon) + 0.2,
+length.out = 100),
+Latitude = seq(min(lat) - 0.2,
+max(lat) + 0.2,
+length.out = 100),
+YR = 2014:max(TX_loc_fires_human_nat$YR))
+
+X <- predict(TimeSpent_ONFIRE, grid_locs, se.fit = TRUE)
+
+grid_locs$pred <- X$fit
+grid_locs$se <- X$se.fit
+## Plot predictions and overlay observations
+g1_yr <- ggplot()  + ggtitle("Yearly Predictions Total") +
+geom_raster(data = grid_locs,
+aes(Longitude, Latitude, fill = pmin(pmax(pred, -1), 5))) +
+facet_wrap(~YR, nrow = 5, ncol = 3) +
+geom_point(data = filter(TX_loc_fires_human_nat, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+aes(Longitude, Latitude),
+colour = "black", size = 3) +
+geom_point(data=filter(TX_loc_fires_human_nat, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+aes(Longitude, Latitude, colour = log(Time_Spent_ONFIRE_NUMERIC)),
+size = 2) +
+fill_scale(limits = c(-1, 5),
+name = expression(log(Y[YR]))) +
+col_scale(name = "log(Time)", limits=c(-1, 5)) +
+theme_bw()
+## Plot prediction standard errors
+g2_yr <- ggplot() + ggtitle("Prediction Standard Error (Years)") +
+geom_raster(data = grid_locs,
+aes(Longitude, Latitude, fill = pmin(se, 3))) +
+facet_wrap(~YR, nrow = 5, ncol = 3) +
+fill_scale(palette = "BrBG",
+limits = c(0, 3.0),
+name = expression(s.e.)) +
+theme_bw()
+
+g1_yr
+```
+
+
+### Year Pred Error (2014-2022)
+```{r, fig.width=12, fig.height=12}
+g2_yr
+```
+
+### Month and Year Pred
+
+
+```{r, fig.width=12, fig.height=16}
+ggplot()  + ggtitle("Yearly and Monthly Prediction Model Combined") +
+      geom_raster(data = grid_locs,
+                  aes(Longitude, Latitude, fill = pmin(pmax(pred, -1), 5))) +
+      facet_wrap(YR~MON, nrow = 10, ncol = 12) +
+      geom_point(data = filter(TX_loc_fires_human_nat, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+                 aes(Longitude, Latitude),
+                 colour = "black", size = 3) +
+      geom_point(data=filter(TX_loc_fires_human_nat, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+                 aes(Longitude, Latitude, colour = log(Time_Spent_ONFIRE_NUMERIC)),
+                 size = 2) +
+      fill_scale(limits = c(-1, 5),
+                 name = expression(log(Y[YR_MON]))) +
+      col_scale(name = "log(Time)", limits=c(-1, 5)) +
+      theme_bw()
+```
+
+### Yearly Standard Error Spread
+
+```{r, fig.width = 12, fig.height = 16}
+library(fields)
+grid_locs_test_2014 <- grid_locs[which(grid_locs$YR == 2014), ]
+grid_locs_test_2015 <- grid_locs[which(grid_locs$YR == 2015), ]
+grid_locs_test_2016 <- grid_locs[which(grid_locs$YR == 2016), ]
+grid_locs_test_2017 <- grid_locs[which(grid_locs$YR == 2017), ]
+grid_locs_test_2018 <- grid_locs[which(grid_locs$YR == 2018), ]
+grid_locs_test_2019 <- grid_locs[which(grid_locs$YR == 2019), ]
+grid_locs_test_2020 <- grid_locs[which(grid_locs$YR == 2020), ]
+grid_locs_test_2021 <- grid_locs[which(grid_locs$YR == 2021), ]
+grid_locs_test_2022 <- grid_locs[which(grid_locs$YR == 2022), ]
+
+TX_locs_human_nat_2014 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2014), ]
+TX_locs_human_nat_2015 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2015), ]
+TX_locs_human_nat_2016 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2016), ]
+TX_locs_human_nat_2017 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2017), ]
+TX_locs_human_nat_2018 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2018), ]
+TX_locs_human_nat_2019 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2019), ]
+TX_locs_human_nat_2020 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2020), ]
+TX_locs_human_nat_2021 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2021), ]
+TX_locs_human_nat_2022 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2022), ]
+
+dist_mat_2014 <- rdist.earth(grid_locs_test_2014[c(1,2)], TX_locs_human_nat_2014[c(1,2)], miles = TRUE)
+dist_mat_2015 <-rdist.earth(grid_locs_test_2015[c(1,2)], TX_locs_human_nat_2015[c(1,2)], miles = TRUE)
+dist_mat_2016 <-rdist.earth(grid_locs_test_2016[c(1,2)], TX_locs_human_nat_2016[c(1,2)], miles = TRUE)
+dist_mat_2017 <-rdist.earth(grid_locs_test_2017[c(1,2)], TX_locs_human_nat_2017[c(1,2)], miles = TRUE)
+dist_mat_2018 <-rdist.earth(grid_locs_test_2018[c(1,2)], TX_locs_human_nat_2018[c(1,2)], miles = TRUE)
+dist_mat_2019 <-rdist.earth(grid_locs_test_2019[c(1,2)], TX_locs_human_nat_2019[c(1,2)], miles = TRUE)
+dist_mat_2020 <-rdist.earth(grid_locs_test_2020[c(1,2)], TX_locs_human_nat_2020[c(1,2)], miles = TRUE)
+dist_mat_2021 <-rdist.earth(grid_locs_test_2021[c(1,2)], TX_locs_human_nat_2021[c(1,2)], miles = TRUE)
+dist_mat_2022 <-rdist.earth(grid_locs_test_2022[c(1,2)], TX_locs_human_nat_2022[c(1,2)], miles = TRUE)
+
+rows_loc_df_2014 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2014))
+for (x in 1:ncol(dist_mat_2014)) {
+  row <- which(dist_mat_2014 == min(dist_mat_2014[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2014[x, 1] <- row
+}
+
+rows_loc_df_2015 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2015))
+for (x in 1:ncol(dist_mat_2015)) {
+  row <- which(dist_mat_2015 == min(dist_mat_2015[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2015[x, 1] <- row
+}
+
+rows_loc_df_2016 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2016))
+for (x in 1:ncol(dist_mat_2016)) {
+  row <- which(dist_mat_2016 == min(dist_mat_2016[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2016[x, 1] <- row
+}
+
+rows_loc_df_2017 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2017))
+for (x in 1:ncol(dist_mat_2017)) {
+  row <- which(dist_mat_2017 == min(dist_mat_2017[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2017[x, 1] <- row
+}
+
+rows_loc_df_2018 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2018))
+for (x in 1:ncol(dist_mat_2018)) {
+  row <- which(dist_mat_2018 == min(dist_mat_2018[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2018[x, 1] <- row
+}
+
+rows_loc_df_2019 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2019))
+for (x in 1:ncol(dist_mat_2019)) {
+  row <- which(dist_mat_2019 == min(dist_mat_2019[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2019[x, 1] <- row
+}
+
+rows_loc_df_2020 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2020))
+for (x in 1:ncol(dist_mat_2020)) {
+  row <- which(dist_mat_2020 == min(dist_mat_2020[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2020[x, 1] <- row
+}
+
+rows_loc_df_2021 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2021))
+for (x in 1:ncol(dist_mat_2021)) {
+  row <- which(dist_mat_2021 == min(dist_mat_2021[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2021[x, 1] <- row
+}
+
+rows_loc_df_2022 = data.frame(grid_location = 1, TX_location = 1:ncol(dist_mat_2022))
+for (x in 1:ncol(dist_mat_2022)) {
+  row <- which(dist_mat_2022 == min(dist_mat_2022[,x]), arr.ind = TRUE)[1]
+  rows_loc_df_2022[x, 1] <- row
+}
+
+all_grid_locs_match_raw <- rbind(grid_locs_test_2014[c(rows_loc_df_2014$grid_location), ], grid_locs_test_2015[c(rows_loc_df_2015$grid_location), ], grid_locs_test_2016[c(rows_loc_df_2016$grid_location), ], grid_locs_test_2017[c(rows_loc_df_2017$grid_location), ], grid_locs_test_2018[c(rows_loc_df_2018$grid_location), ], grid_locs_test_2019[c(rows_loc_df_2019$grid_location), ], grid_locs_test_2020[c(rows_loc_df_2020$grid_location), ], grid_locs_test_2021[c(rows_loc_df_2021$grid_location), ], grid_locs_test_2022[c(rows_loc_df_2022$grid_location), ])
+
+plot_of_pred_actual <-ggplot() + geom_point(data = all_grid_locs_match_raw, mapping = aes(x = Longitude, y = Latitude, colour = "Prediction")) + geom_point(data = TX_loc_fires_human_nat, mapping = aes(x = Longitude, y = Latitude, colour = "Actual")) + ggtitle("Closest Prediction to Each Raw Data Point in terms of Miles")
+
+dist_mat_tot <- rdist.earth(all_grid_locs_match_raw[c(1,2)], TX_loc_fires_human_nat[c(1,2)], miles = TRUE)
+all_grid_locs_match_raw$Distance_to_Actual <- c(diag(dist_mat_tot))
+
+
+pred_grid_2015 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2015), ]
+pred_grid_2016 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2016), ]
+pred_grid_2017 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2017), ]
+pred_grid_2018 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2018), ]
+pred_grid_2019 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2019), ]
+pred_grid_2020 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2020), ]
+pred_grid_2021 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2021), ]
+pred_grid_2022 <- all_grid_locs_match_raw[which(all_grid_locs_match_raw$YR == 2022), ]
+
+actual_tx_loc_2015 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2015), ]
+actual_tx_loc_2016 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2016), ]
+actual_tx_loc_2017 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2017), ]
+actual_tx_loc_2018 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2018), ]
+actual_tx_loc_2019 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2019), ]
+actual_tx_loc_2020 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2020), ]
+actual_tx_loc_2021 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2021), ]
+actual_tx_loc_2022 <- TX_loc_fires_human_nat[which(TX_loc_fires_human_nat$YR == 2022), ]
+
+se_2015_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2015, mapping = aes(x = Longitude, y = Latitude, colour = se), size = 0.75) + scale_shape_manual() + ggtitle("2015 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75))
+se_2016_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2016, mapping = aes(x = Longitude, y = Latitude, colour = se), size = 0.75) + scale_shape_manual() + ggtitle("2016 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75)) 
+se_2017_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2017, mapping = aes(x = Longitude, y = Latitude, colour = se), size = 0.75) + scale_shape_manual() + ggtitle("2017 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75)) 
+se_2018_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2018, mapping = aes(x = Longitude, y = Latitude, colour = se), size = 0.75) + scale_shape_manual() + ggtitle("2018 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75))
+se_2019_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2019, mapping = aes(x = Longitude, y = Latitude, colour = se), size = 0.75) + scale_shape_manual() + ggtitle("2019 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75)) 
+se_2020_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2020, mapping = aes(x = Longitude, y = Latitude, colour = se), size = 0.75) + scale_shape_manual() + ggtitle("2020 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75)) 
+se_2021_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2021, mapping = aes(x = Longitude, y = Latitude, colour = se)) + scale_shape_manual() + ggtitle("2021 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75)) 
+se_2022_min <- ggmap(map_stamen) + geom_point(data = pred_grid_2022, mapping = aes(x = Longitude, y = Latitude, colour = se), size = 0.75) + scale_shape_manual() + ggtitle("2022 Closest Prediction Standard Errors") + scale_color_gradientn(name = "St.Err.", colours = c("blue","yellow"), limits = c(0,0.75), breaks = c(0,0.15,0.3,0.45,0.6,0.75))
+
+library(ggpubr)
+ggarrange(se_2015_min, se_2016_min, se_2017_min, se_2018_min, se_2019_min, se_2020_min, se_2021_min, se_2022_min)
+```
+
+```{r, fig.height=16, fig.width=16}
+se_dist_to_actual_2015 <- ggmap(map_stamen) + geom_point(data = pred_grid_2015, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2015 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+se_dist_to_actual_2016 <- ggmap(map_stamen) + geom_point(data = pred_grid_2016, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2016 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+se_dist_to_actual_2017 <- ggmap(map_stamen) + geom_point(data = pred_grid_2017, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2017 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+se_dist_to_actual_2018 <- ggmap(map_stamen) + geom_point(data = pred_grid_2018, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2018 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+se_dist_to_actual_2019 <- ggmap(map_stamen) + geom_point(data = pred_grid_2019, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2019 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+se_dist_to_actual_2020 <- ggmap(map_stamen) + geom_point(data = pred_grid_2020, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2020 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+se_dist_to_actual_2021 <- ggmap(map_stamen) + geom_point(data = pred_grid_2021, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2021 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+se_dist_to_actual_2022 <- ggmap(map_stamen) + geom_point(data = pred_grid_2022, mapping = aes(x = Longitude, y = Latitude, colour = Distance_to_Actual), size = .75) + ggtitle("2022 Prediction Distance to Closest Acutal Point") + col_scale(name = "Dist. (Miles)", limits=c(0, 3.5))
+
+
+
+ggarrange(se_dist_to_actual_2015, se_dist_to_actual_2016, se_dist_to_actual_2017, se_dist_to_actual_2018, se_dist_to_actual_2019, se_dist_to_actual_2020, se_dist_to_actual_2021, se_dist_to_actual_2022)
+```

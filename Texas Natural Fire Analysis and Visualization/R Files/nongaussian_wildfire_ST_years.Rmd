@@ -1,0 +1,96 @@
+---
+title: "Untitled"
+author: "Ben Klein"
+date: "11/17/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(mgcv)
+library(STRbook)
+library(tidyr)
+library(lubridate)
+TX_loc_fires <- TX_loc_fires[order(TX_loc_fires$FireDiscoveryDate, decreasing = FALSE), ]
+TX_loc_fires$YR <- year(TX_loc_fires$FireDiscoveryDate)
+TX_loc_fires$MON <- month(TX_loc_fires$FireDiscoveryDate)
+TX_loc_fires$MON <- month.name[as.numeric(TX_loc_fires$MON)]
+TX_loc_fires$MON <- factor(TX_loc_fires$MON, levels = c("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"))
+TX_loc_fires$DAY <- day(TX_loc_fires$FireDiscoveryDate)
+
+#TX_loc_fires_human_nat <- TX_loc_fires_human_nat[-which(TX_loc_fires_human_nat$YR == 2014), ]
+
+# make counties as a factor
+
+f <- Time_Spent_ONFIRE_NUMERIC ~ te(Longitude, Latitude, YR, # inputs over which to smooth
+bs = c("tp", "cr"), # types of bases
+k = c(50, 8), # knot count in each dimension
+d = c(2, 1)) # (s,t) basis dimension
+```
+
+```{r}
+TimeSpent_ONFIRE <- gam(f, family = nb(link = "log"),
+data = TX_loc_fires)
+
+TimeSpent_ONFIRE$family$getTheta(trans = 1)
+
+lon <- TX_loc_fires$Longitude
+lat <- TX_loc_fires$Latitude
+## Construct space-time grid
+grid_locs <- expand.grid(Longitude = seq(min(lon) - 0.2,
+max(lon) + 0.2,
+length.out = 80),
+Latitude = seq(min(lat) - 0.2,
+max(lat) + 0.2,
+length.out = 80),
+YR = 2014:max(TX_loc_fires$YR))
+```
+
+```{r}
+X <- predict(TimeSpent_ONFIRE, grid_locs, se.fit = TRUE)
+
+#predict(object, newdata, interval, se.fit = TRUE)
+
+grid_locs$pred <- X$fit
+grid_locs$se <- X$se.fit
+## Plot predictions and overlay observations
+g1_yr <- ggplot()  +
+geom_raster(data = grid_locs,
+aes(Longitude, Latitude, fill = pmin(pmax(pred, -1), 5))) +
+facet_wrap(~YR, nrow = 3, ncol = 5) +
+geom_point(data = filter(TX_loc_fires, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+aes(Longitude, Latitude),
+colour = "black", size = 3) +
+geom_point(data=filter(TX_loc_fires, !is.na(Time_Spent_ONFIRE_NUMERIC)),
+aes(Longitude, Latitude, colour = log(Time_Spent_ONFIRE_NUMERIC)),
+size = 2) +
+fill_scale(limits = c(-1, 5),
+name = expression(log(Y[YR]))) +
+col_scale(name = "log(Time_Spent_ONFIRE_NUMERIC)", limits=c(-1, 5)) +
+theme_bw()
+## Plot prediction standard errors
+g2_yr <- ggplot() +
+geom_raster(data = grid_locs,
+aes(Longitude, Latitude, fill = pmin(se, 3))) +
+facet_wrap(~YR, nrow = 3, ncol = 5) +
+fill_scale(palette = "BrBG",
+limits = c(0, 3.0),
+name = expression(s.e.)) +
+theme_bw()
+
+print(g1_yr) #Prediction Plots
+print(g2_yr) #Standard Error Plots
+
+par(mfrow = c(2,2))
+g1
+g2
+g1_yr
+g2_yr
+
+plot.gam(TimeSpent_ONFIRE) #Tensor Products Plots
+```
